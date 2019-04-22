@@ -1,0 +1,108 @@
+@charset "UTF-8";
+#container {
+    width:100%;
+    text-align:center;
+}
+#player_container {
+    width:auto;
+    text-align:center;
+}
+
+
+#left{
+    float:left;
+    width:auto;
+    transform: translate(10%, 10%);
+}
+
+#right{
+    float:left;
+    width:auto;
+	transform: translate(30%, 10%);
+}
+#club_left_div{
+    float:left;
+    width:30%;
+    transform: translate(5%, 20%);
+}
+
+#player_right_div{
+    float:left;
+    width:65%;
+	transform: translate(5%, 20%);
+}
+
+
+table{
+
+     border-collapse: collapse;
+
+     font-family: Futura, Arial, sans-serif;
+	 align-content: center
+}
+
+caption {
+
+     font-size: larger;
+
+     margin: 1em auto;
+
+}
+
+th,td {
+
+     padding: .65em;
+
+}
+
+th {
+
+     background: #555 nonerepeat scroll 0 0;
+
+   /* border: 1px solid #777; */
+
+   color: #fff;
+
+}
+
+td {
+
+     /* border: 1px solid #777; */
+
+}
+
+#shooter_table:nth-child #assist_table:nth-child(odd) {
+
+     background: #ccc;
+
+}
+
+th:first-child {
+
+     border-radius: 12px 0 0 0;
+
+}
+
+th:last-child {
+
+     border-radius: 0 12px 0 0;
+
+}
+
+tr:last-child td:first-child {
+
+     border-radius: 0 0 0 9px;
+
+}
+
+tr:last-child td:last-child {
+
+     border-radius: 0 0 9px 0;
+
+}
+tr{
+
+     background: linear-gradient(#fff,#aaa);
+     font-size: 17px;
+
+}
