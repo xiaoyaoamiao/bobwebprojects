@@ -13,7 +13,6 @@
 <body class="mainbody">
 <header class="header" align="center">
   <h1>美世纪珠宝业余联赛</h1>
-	<script src="js/main.js"></script>
 	<script src="js/jquery.min.js"></script>
     <script>
           $(function(){
