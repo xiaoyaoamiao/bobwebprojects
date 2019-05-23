@@ -25,13 +25,23 @@ function menuclick(item){
 		$("#content").load("list.php");
 		document.getElementById("list").className = "active";
 		document.getElementById("club-manage").className = "";
+		document.getElementById("player-manage").className = "";
 		document.getElementById("data-manage").className = "";
 		document.getElementById("about").className = "";
 	}
 	if (item == "club-manage") {
-		$("#content").load("player_manage.php");
+		$("#content").load("club_manage.php");
 		document.getElementById("list").className = "";
 		document.getElementById("club-manage").className = "active";
+		document.getElementById("player-manage").className = "";
+		document.getElementById("data-manage").className = "";
+		document.getElementById("about").className = "";
+	}
+	if (item == "player-manage") {
+		$("#content").load("player_manage.php");
+		document.getElementById("list").className = "";
+		document.getElementById("club-manage").className = "";
+		document.getElementById("player-manage").className = "active";
 		document.getElementById("data-manage").className = "";
 		document.getElementById("about").className = "";
 	}
@@ -39,37 +49,36 @@ function menuclick(item){
 		$("#content").load("data_manage.php");
 		document.getElementById("list").className = "";
 		document.getElementById("club-manage").className = "";
+		document.getElementById("player-manage").className = "";
 		document.getElementById("data-manage").className = "active";
 		document.getElementById("about").className = "";
 	}
 	if (item == "about") {
 		$("#content").load("");
 		document.getElementById("list").className = "";
+		document.getElementById("player-manage").className = "";
 		document.getElementById("club-manage").className = "";
 		document.getElementById("data-manage").className = "";
 		document.getElementById("about").className = "active";
 	}
 }
 </script>
-	
 <script src="club_manage.js"></script>
 </header>
-
 <div class="topnav">
   <a id="list" class="active" href="#list" onClick="menuclick('list')">射手/助攻榜</a>
   <a id="club-manage" href="#club-manage" onClick="menuclick('club-manage')">球队管理</a>
+  <a id="player-manage" href="#player-manage" onClick="menuclick('player-manage')">球员管理</a>
   <a id="data-manage" href="#data-manage" onClick="menuclick('data-manage')">数据录入</a>
   <a id="about" href="#contact" onClick="menuclick('about')">关于联赛</a>
 </div>
-
 <main>
 	<div id="content"></div>
 </main>
-	
 <footer>
-  <p>Posted by: miao</p>
+<!--   <p>Posted by: miao</p>
   <p>Contact information: <a href="miao2005xu@163.com">
-  miao2005xu@163.com</a>.</p>
+  miao2005xu@163.com</a>.</p> -->
 </footer>
 </body>
 </html>
