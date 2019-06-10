@@ -25,7 +25,54 @@ class Response{
                 break;
         }
     }
-
+    /*
+    * Get ticket status
+    * @param integer $code 状态码
+    * @param string $message 状态信息
+    * @param array $data 数据
+    * return string 
+    */
+    public static function response_ticket_status($code, $ticketid=''){
+        $STAGE_DFP_SERVICE_URL = "https://stage-dfp-service-internal.shdrapps.disney.com/shdr-parkentry-service/tickets/".$ticketid;
+        $ci = curl_init();
+        curl_setopt($ci, CURLOPT_URL, $STAGE_DFP_SERVICE_URL);
+        curl_setopt($ci, CURLOPT_HEADER, FALSE);
+        curl_setopt($ci, CURLOPT_NOBODY, FALSE); 
+        curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ci, CURLOPT_FOLLOWLOCATION, FALSE);
+        curl_setopt($ci, CURLOPT_AUTOREFERER, TRUE);
+        curl_setopt($ci, CURLOPT_TIMEOUT, 20);
+    
+        $content=curl_exec($ci);
+        $ticketinfo=curl_getinfo($ci,CURLINFO_HTTP_CODE);
+        if (strpos($content,'NOTFOUND'))
+            return "false";
+        else
+            return "true";
+    }
+    public static function response_entry_ticket($code, $ticketid=''){
+        $STAGE_DFP_SERVICE_URL = "https://stage-dfp-service-internal.shdrapps.disney.com/shdr-parkentry-service/tickets/add";
+        $header_array = array("Content-Type: application/json");
+        $pool = '[{"oneSourceParkId":"shdr","ticketCode":10004,"ticketId":"'.$ticketid.'"}]';
+        $ci = curl_init();
+        curl_setopt($ci, CURLOPT_URL, $STAGE_DFP_SERVICE_URL);
+        curl_setopt($ci, CURLOPT_HTTPHEADER, $header_array);
+        curl_setopt($ci, CURLOPT_POSTFIELDS, $pool);
+        curl_setopt($ci, CURLOPT_HEADER, FALSE);
+        curl_setopt($ci, CURLOPT_NOBODY, FALSE); 
+        curl_setopt($ci, CURLOPT_POST, TRUE);
+        curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ci, CURLOPT_FOLLOWLOCATION, FALSE);
+        curl_setopt($ci, CURLOPT_AUTOREFERER, TRUE);
+        curl_setopt($ci, CURLOPT_TIMEOUT, 20);
+    
+        $content=curl_exec($ci);
+        $ticketinfo=curl_getinfo($ci,CURLINFO_HTTP_CODE);
+        if ((strpos($content,'"status":"SUCCESS"')) and $ticketinfo === 200)
+            return TRUE;
+        else
+            return FALSE;
+    }
     /*
     * 封装数为为json数据类型
     * @param integer $code 状态码

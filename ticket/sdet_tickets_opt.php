@@ -47,7 +47,7 @@ function lang($key){
 
 
 <script type="text/javascript">
-
+var temple_edit_ticket_value = "";
 function showUser(loadtype) {
 	var js_lang = <?php echo json_encode($langs) ?>;
 	if (verify_token("t="+js_lang["timeStamp"]+"&r="+js_lang["randomStr"]+"&s="+js_lang["signature"]) == false){
@@ -55,16 +55,17 @@ function showUser(loadtype) {
 		return
 	}
 	var ticket_no = document.forms['unpark']['addTicket'].value
+	var ticket_type = document.forms['unpark']['type'].value
 	if (loadtype != 0){
 		if (verify_ticket(ticket_no)){
-			ajax_operation("opt=add&q="+ticket_no)
+			ajax_operation("opt=add&q="+ticket_no+"&t="+ticket_type)
 		}
 	}
-    ajax_operation("opt=&q=")
+    ajax_operation("opt=&q=&t=")
 }
 
 
-function verify_ticket(ticket_no){
+function verify_ticket(ticket_no=""){
 	if (ticket_no == ""){
 		alert("Please enter ticket number!")
 		return false
@@ -76,24 +77,22 @@ function verify_ticket(ticket_no){
 	return true
 }
 
-function edit_ticket(number, id){
+function edit_ticket(id){
 	var input_element = document.getElementById('input_unpark_text' + id);
-	var edit_btn_element = document.getElementById('edit_unpark_btn' + number);
-	var input_element_status = input_element.disabled;
-	if (input_element_status == true) {
-		edit_btn_element.value = "Update";
-		input_element.disabled = false;
-	}else{
-		var input_element_value = document.getElementById('input_unpark_text' + id).value;
-		if (verify_ticket(input_element_value)){
-			ajax_operation("opt=update&q="+input_element_value+"&id="+id)
-			edit_btn_element.value = "Edit";
-			input_element.disabled = true;
-		}
+	var type_element = document.getElementById('type' + id);
+	var edit_btn_element = document.getElementById('edit_unpark_btn' + id);
+	var input_element_value = document.getElementById('input_unpark_text' + id).value;
+	var status_element_value = document.getElementById('type' + id).value;
+
+	if (temple_edit_ticket_value == input_element_value)
+		return
+	if (verify_ticket(input_element_value)){
+		ajax_operation("opt=update&q="+input_element_value+"&id="+id+"&status="+status_element_value)
 	}
+	
 }
 
-function delete_ticket(id){
+function delete_ticket(id=""){
 	var result = confirm("Want to delete?");
 	if (result) {
 	    //Logic to delete the item
@@ -101,7 +100,48 @@ function delete_ticket(id){
 	}
 }
 
+function entry_ticket(ticketid=""){
+	var result = confirm("Want to Entry?");
+	if (result) {
+	    //Logic to delete the item
+	    ajax_operation("opt=entry&ticketid="+ticketid);
+	}
+}
 
+function edit_text_in(id=""){
+	text_element = document.getElementById("input_unpark_text"+id)
+	text_element.style.background = "yellow";
+	temple_edit_ticket_value = text_element.value;
+	
+}
+
+function edit_text_out(id=""){
+	var ticket_element = document.getElementById("input_unpark_text"+id);
+	ticket_element.style.background = "";
+	if (!isNaN(id))
+		{	
+			edit_ticket(id);
+		}
+}
+
+function edit_textfield_in(id=""){
+	document.getElementById(id).style.background = "yellow";
+}
+
+function edit_textfield_out(id="",optid=''){
+	document.getElementById(id).style.background = "";
+	if (!isNaN(optid))
+		{	
+			var des = document.getElementById(id).value;
+			ajax_operation("opt=editdes&ticketid="+optid+"&des="+des);
+		}
+}
+
+function change_type(id=""){
+		select_element = document.getElementById("type"+id).value;
+		ajax_operation("opt=changetype&id="+id+"&select_value="+select_element);
+
+}
 
 function ajax_operation(parameters){
 	if (window.XMLHttpRequest) {
@@ -154,9 +194,31 @@ function verify_token(parameters){
 <br>
 <form name="unpark">
 <input type="text" name="addTicket" required>
+<select name="type" required>
+	 <option value="a">A</option>
+	 <option value="b">B</option>
+	 <option value="c">C</option>
+	 <option value="d">D</option>
+	 <option value="e">E</option>
+	 <option value="f">F</option>
+	 <option value="g">G</option>
+</select>
 <input type="button" value="Add" onclick="showUser()">
-<div><a href="tickets_server.php?format=xml">View All Tickets - XML</a></div>
-<div><a href="tickets_server.php?format=json">View All Tickets - JSON</a></div>
+<div><a href="tickets_server.php?format=xml">View All Tickets - XML</a>
+	<?php
+	$types = array('a','b','c','d','e','f','g');
+		foreach($types as $t){
+			echo "<a href=\"tickets_server.php?format=xml&type=".strtolower($t)."\"> -".strtoupper($t)."- </a>";
+		}
+	 ?>
+	</div>
+<div><a href="tickets_server.php?format=json">View All Tickets - JSON</a>
+<?php
+	$types = array('a','b','c','d','e','f','g');
+		foreach($types as $t){
+			echo "<a href=\"tickets_server.php?format=json&type=".strtolower($t)."\"> -".strtoupper($t)."- </a>";
+		}
+	 ?></div>
 </form>
 
 <div id="txtHint"><b></b></div>
